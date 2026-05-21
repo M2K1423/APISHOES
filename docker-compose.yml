@@ -4,8 +4,12 @@ services:
     restart: unless-stopped
     ports:
       - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - mongo_data:/data/db
+      - ./docker/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
     healthcheck:
       test: ["CMD", "mongosh", "--quiet", "mongodb://localhost:27017/admin", "--eval", "db.adminCommand('ping').ok"]
       interval: 10s
@@ -25,7 +29,8 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3001
-      MONGODB_URI: mongodb://mongo:27017
+      # Use the created app user to authenticate to Mongo
+      MONGODB_URI: mongodb://appUser:AppPass123@mongo:27017/shoes_db?authSource=admin
       MONGODB_DB_NAME: shoes_db
     ports:
       - "3001:3001"
