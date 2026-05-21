@@ -32,7 +32,7 @@ export const DEFAULT_PRODUCTS = [
     category: "Lifestyle",
     imageUrls: [
       "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1521093470113-1b4d1b7d9a7d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1200&q=80",
       "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=1200&q=80"
     ],
     discount: "-23%",
@@ -76,7 +76,7 @@ export const DEFAULT_PRODUCTS = [
     category: "Trail",
     imageUrls: [
       "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1518893060684-92a3c9b2e8a6?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1519744792095-2f2205e87b6f?auto=format&fit=crop&w=1200&q=80"
     ],
     discount: "-28%",
     promotion: "Giảm 100k",
@@ -95,7 +95,7 @@ export const DEFAULT_PRODUCTS = [
     oldPrice: "3.200.000đ",
     category: "Running",
     imageUrls: [
-      "https://images.unsplash.com/photo-1519744792095-2f2205e87b6f?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1200&q=80"
     ],
     discount: "-22%",
     promotion: "Tặng dây giày",
@@ -114,7 +114,7 @@ export const DEFAULT_PRODUCTS = [
     oldPrice: "2.450.000đ",
     category: "Court",
     imageUrls: [
-      "https://images.unsplash.com/photo-1523381210873-1c3c5d0c0fda?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&w=1200&q=80"
     ],
     discount: "-19%",
     promotion: "Combo giảm thêm 5%",
@@ -133,7 +133,7 @@ export const DEFAULT_PRODUCTS = [
     oldPrice: "1.150.000đ",
     category: "Casual",
     imageUrls: [
-      "https://images.unsplash.com/photo-1526406915899-0ccb1a1d9f1f?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=1200&q=80"
     ],
     discount: "-22%",
     promotion: "Mua 2 giảm 10%",
@@ -152,7 +152,7 @@ export const DEFAULT_PRODUCTS = [
     oldPrice: "1.650.000đ",
     category: "Training",
     imageUrls: [
-      "https://images.unsplash.com/photo-1520975916754-8d8b4b514c5a?auto=format&fit=crop&w=1200&q=80"
+          "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80"
     ],
     discount: "-20%",
     promotion: "Giảm 50k cho đơn hàng đầu",
@@ -171,7 +171,7 @@ export const DEFAULT_PRODUCTS = [
     oldPrice: "5.490.000đ",
     category: "Lifestyle",
     imageUrls: [
-      "https://images.unsplash.com/photo-1528701800489-476f9d3d3b8a?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=1200&q=80"
     ],
     discount: "-27%",
     promotion: "Quà tặng giới hạn",
@@ -209,7 +209,7 @@ export const DEFAULT_PRODUCTS = [
     oldPrice: "3.600.000đ",
     category: "Running",
     imageUrls: [
-      "https://images.unsplash.com/photo-1533105073-7c9b9f3d4b4b?auto=format&fit=crop&w=1200&q=80"
+      "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=1200&q=80"
     ],
     discount: "-21%",
     promotion: "Tặng vớ kỹ thuật",
