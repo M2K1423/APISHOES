@@ -1,16 +1,33 @@
-import { Injectable } from "@nestjs/common";
-
-export type Product = {
-  id: string;
-  name: string;
-  description: string;
-  price: string;
-  category: string;
-  colors: string[];
-};
+import { Injectable, OnModuleInit } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { DEFAULT_PRODUCTS } from "./products/product.constants";
+import { Product } from "./products/product.schema";
 
 @Injectable()
-export class AppService {
+export class AppService implements OnModuleInit {
+  constructor(@InjectModel(Product.name) private readonly productModel: Model<Product>) {}
+
+  async onModuleInit() {
+    await this.seedProducts();
+  }
+
+  async seedProducts(force = false) {
+    await this.productModel.createCollection();
+
+    if (force) {
+      await this.productModel.deleteMany({});
+      await this.productModel.insertMany(DEFAULT_PRODUCTS);
+      return;
+    }
+
+    const productCount = await this.productModel.countDocuments();
+
+    if (productCount === 0) {
+      await this.productModel.insertMany(DEFAULT_PRODUCTS);
+    }
+  }
+
   getHealth() {
     return {
       status: "ok",
@@ -19,32 +36,21 @@ export class AppService {
     };
   }
 
-  getProducts(): Product[] {
-    return [
-      {
-        id: "runner-01",
-        name: "Velocity Runner",
-        description: "Giay chay bo nhe, dem am va phan hoi tot cho tap luyen hang ngay.",
-        price: "1.890.000đ",
-        category: "Running",
-        colors: ["White", "Grey"]
-      },
-      {
-        id: "street-02",
-        name: "Urban Street",
-        description: "Phom dep, de bang va de phoi voi ao thun, jeans hoac outfit toi gian.",
-        price: "1.450.000đ",
-        category: "Lifestyle",
-        colors: ["Black", "Cream"]
-      },
-      {
-        id: "court-03",
-        name: "Court Classic",
-        description: "Mau giay the thao co dien, de ben va ton dang trong moi bo trang phuc.",
-        price: "1.620.000đ",
-        category: "Court",
-        colors: ["Navy", "White"]
-      }
-    ];
+  async getProducts(): Promise<Product[]> {
+    const products = await this.productModel.find().sort({ id: 1 }).lean();
+
+    return products.map(({ _id, __v, ...product }) => product as Product);
+  }
+
+  async getProductById(id: string): Promise<Product | null> {
+    const product = await this.productModel.findOne({ id }).lean();
+
+    if (!product) {
+      return null;
+    }
+
+    const { _id, __v, ...productData } = product;
+
+    return productData as Product;
   }
 }
