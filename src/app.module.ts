@@ -3,6 +3,10 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
+ 
+import { UserSchema } from "./users/user.schema";
+import { UsersService } from "./users/users.service";
+import { UsersController } from "./users/users.controller";
 
 @Module({
   imports: [
@@ -14,8 +18,10 @@ import { AppService } from "./app.service";
         dbName: configService.get<string>("MONGODB_DB_NAME")
       })
     })
+    ,
+    MongooseModule.forFeature([{ name: "User", schema: UserSchema }])
   ],
-  controllers: [AppController],
-  providers: [AppService]
+  controllers: [AppController, UsersController],
+  providers: [AppService, UsersService]
 })
 export class AppModule {}
