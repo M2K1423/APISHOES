@@ -5,19 +5,19 @@ import { CartItem } from "../cart/cart.schema";
 @Schema({ timestamps: true })
 export class Order extends Document {
   @Prop({ required: true, index: true })
-  userId: string;
+  userId!: string;
 
   @Prop({ type: Array, default: [] })
-  items: CartItem[];
+  items!: CartItem[];
 
   @Prop({ required: true })
-  total: number;
+  total!: number;
 
   @Prop({ required: true, default: "pending" })
-  status: string; // "pending", "processing", "shipped", "delivered", "cancelled"
+  status!: string; // "pending", "processing", "shipped", "delivered", "cancelled"
 
   @Prop({ type: Object, required: true })
-  shippingAddress: {
+  shippingAddress!: {
     fullName: string;
     phone: string;
     email: string;
@@ -26,7 +26,7 @@ export class Order extends Document {
   };
 
   @Prop({ required: true })
-  paymentMethod: string;
+  paymentMethod!: string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

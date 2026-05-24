@@ -1,6 +1,6 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import { AppService } from "./app.service";
+import { ProductsService } from "./products/products.service";
 
 async function seedProducts() {
   const app = await NestFactory.createApplicationContext(AppModule, {
@@ -8,8 +8,8 @@ async function seedProducts() {
   });
 
   try {
-    const appService = app.get(AppService);
-    await appService.seedProducts(true);
+    const productsService = app.get(ProductsService);
+    await productsService.seedProducts(true);
     console.log("Products collection seeded successfully.");
   } finally {
     await app.close();

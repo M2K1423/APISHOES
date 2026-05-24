@@ -61,4 +61,30 @@ export class ProductsService implements OnModuleInit {
     const { _id, __v, ...productData } = product;
     return productData as Product;
   }
+
+  async createProduct(productData: any): Promise<Product> {
+    // Generate a simple ID if not provided
+    if (!productData.id) {
+      productData.id = productData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Date.now();
+    }
+    const newProduct = new this.productModel(productData);
+    const saved = await newProduct.save();
+    const { _id, __v, ...data } = saved.toObject();
+    return data as Product;
+  }
+
+  async updateProduct(id: string, productData: any): Promise<Product | null> {
+    const updated = await this.productModel
+      .findOneAndUpdate({ id }, { $set: productData }, { new: true })
+      .lean();
+    
+    if (!updated) return null;
+    const { _id, __v, ...data } = updated;
+    return data as Product;
+  }
+
+  async deleteProduct(id: string): Promise<boolean> {
+    const result = await this.productModel.deleteOne({ id });
+    return result.deletedCount === 1;
+  }
 }

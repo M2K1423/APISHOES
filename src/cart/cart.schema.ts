@@ -4,16 +4,16 @@ import { Document } from "mongoose";
 @Schema()
 export class CartItem {
   @Prop({ required: true })
-  productId: string;
+  productId!: string;
 
   @Prop({ required: true })
-  name: string;
+  name!: string;
 
   @Prop({ required: true })
-  brand: string;
+  brand!: string;
 
   @Prop({ required: true })
-  price: string;
+  price!: string;
 
   @Prop()
   oldPrice?: string;
@@ -22,22 +22,22 @@ export class CartItem {
   image?: string;
 
   @Prop({ required: true })
-  size: string;
+  size!: string;
 
   @Prop()
   color?: string;
 
   @Prop({ required: true, default: 1 })
-  quantity: number;
+  quantity!: number;
 }
 
 @Schema({ timestamps: true })
 export class Cart extends Document {
   @Prop({ required: true, unique: true, index: true })
-  userId: string;
+  userId!: string;
 
   @Prop({ type: [SchemaFactory.createForClass(CartItem)], default: [] })
-  items: CartItem[];
+  items!: CartItem[];
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);
