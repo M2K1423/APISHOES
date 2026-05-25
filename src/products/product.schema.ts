@@ -26,22 +26,22 @@ export class Product {
   @Prop({ type: [String], default: [] })
   imageUrls!: string[];
 
-  @Prop({ required: true })
+  @Prop({ default: "" })
   oldPrice!: string;
 
-  @Prop({ required: true })
+  @Prop({ default: "" })
   discount!: string;
 
-  @Prop({ required: true })
+  @Prop({ default: "" })
   promotion!: string;
 
-  @Prop({ required: true })
+  @Prop({ default: 0 })
   rating!: number;
 
-  @Prop({ required: true })
+  @Prop({ default: 0 })
   reviewCount!: number;
 
-  @Prop({ required: true })
+  @Prop({ default: 0 })
   sold!: number;
 
   @Prop({ type: [String], default: [] })
