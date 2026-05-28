@@ -43,6 +43,123 @@ export const DEFAULT_PRODUCTS = [
     colors: ["Black", "Cream"]
   },
   {
+    id: "pickleball-03",
+    name: "Pickle Pro Court",
+    brand: "Pickleball",
+    productType: "New Arrival",
+    description: "Giày pickleball ổn định cho các pha đổi hướng nhanh, bám sân tốt và hỗ trợ thi đấu cường độ cao.",
+    price: "1.690.000đ",
+    oldPrice: "2.190.000đ",
+    category: "Court",
+    imageUrls: [
+      "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&w=1200&q=80"
+    ],
+    discount: "-23%",
+    promotion: "Tặng tất chống trượt",
+    rating: 4.9,
+    reviewCount: 58,
+    sold: 121,
+    colors: ["White", "Blue"]
+  },
+  {
+    id: "pickleball-04",
+    name: "Pickle Speed Lite",
+    brand: "Pickleball",
+    productType: "Flash Sale",
+    description: "Thiết kế nhẹ, chuyển hướng linh hoạt và phù hợp cho người chơi thích tốc độ trên sân pickleball.",
+    price: "1.520.000đ",
+    oldPrice: "1.990.000đ",
+    category: "Training",
+    imageUrls: [
+      "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1463100099107-aa0980c362e6?auto=format&fit=crop&w=1200&q=80"
+    ],
+    discount: "-24%",
+    promotion: "Freeship toàn quốc",
+    rating: 4.8,
+    reviewCount: 41,
+    sold: 96,
+    colors: ["Grey", "Neon"]
+  },
+  {
+    id: "pickleball-05",
+    name: "Court Grip Max",
+    brand: "Pickleball",
+    productType: "New Arrival",
+    description: "Đế bám chắc, đệm êm và ôm chân tốt cho những trận đấu kéo dài trên sân court.",
+    price: "1.840.000đ",
+    oldPrice: "2.360.000đ",
+    category: "Court",
+    imageUrls: [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=1200&q=80"
+    ],
+    discount: "-22%",
+    promotion: "Combo giảm thêm 5%",
+    rating: 5.0,
+    reviewCount: 67,
+    sold: 138,
+    colors: ["White", "Orange"]
+  },
+  {
+    id: "sport-01",
+    name: "Sport Runner X",
+    brand: "Sport",
+    productType: "New Arrival",
+    description: "Giày thể thao đa năng, phù hợp chạy bộ và tập gym hàng ngày.",
+    price: "1.250.000đ",
+    oldPrice: "1.600.000đ",
+    category: "Running",
+    imageUrls: [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80"
+    ],
+    discount: "-22%",
+    promotion: "Freeship",
+    rating: 4.6,
+    reviewCount: 48,
+    sold: 102,
+    colors: ["Black", "White"]
+  },
+  {
+    id: "sport-02",
+    name: "Sport Trainer Lite",
+    brand: "Sport",
+    productType: "Flash Sale",
+    description: "Thiết kế nhẹ nhàng, thông thoáng, tối ưu cho tập luyện cường độ cao.",
+    price: "990.000đ",
+    oldPrice: "1.350.000đ",
+    category: "Training",
+    imageUrls: [
+      "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=1200&q=80"
+    ],
+    discount: "-26%",
+    promotion: "Mua 2 giảm 10%",
+    rating: 4.4,
+    reviewCount: 22,
+    sold: 65,
+    colors: ["Grey", "Neon"]
+  },
+  {
+    id: "sport-03",
+    name: "Sport Court Pro",
+    brand: "Sport",
+    productType: "New Arrival",
+    description: "Đế bám cao, hỗ trợ chuyển hướng, phù hợp cho các môn thể thao trong nhà.",
+    price: "1.480.000đ",
+    oldPrice: "1.980.000đ",
+    category: "Court",
+    imageUrls: [
+      "https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&w=1200&q=80"
+    ],
+    discount: "-25%",
+    promotion: "Combo giảm thêm 5%",
+    rating: 4.7,
+    reviewCount: 34,
+    sold: 78,
+    colors: ["Blue", "White"]
+  },
+  {
     id: "court-03",
     name: "Court Classic",
     brand: "Puma",
