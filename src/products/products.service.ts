@@ -6,7 +6,7 @@ import { Product } from "./product.schema";
 
 @Injectable()
 export class ProductsService implements OnModuleInit {
-  constructor(@InjectModel(Product.name) private readonly productModel: Model<Product>) {}
+  constructor(@InjectModel(Product.name) private readonly productModel: Model<Product>) { }
 
   private normalizeString(value: unknown, fallback = "") {
     if (typeof value === "string") {
@@ -101,7 +101,7 @@ export class ProductsService implements OnModuleInit {
     if (query.brand) {
       filter.brand = new RegExp(`^${query.brand}$`, 'i');
     }
-    
+
     if (query.category) {
       filter.category = new RegExp(`^${query.category}$`, 'i');
     }
@@ -151,7 +151,7 @@ export class ProductsService implements OnModuleInit {
 
     const normalized = this.normalizeProductPayload(productData, existing as Product);
     const updated = await this.productModel
-      .findOneAndUpdate({ id }, { $set: normalized }, { new: true })
+      .findOneAndUpdate({ id }, { $set: normalized }, { returnDocument: "after" })
       .lean();
 
     if (!updated) return null;
