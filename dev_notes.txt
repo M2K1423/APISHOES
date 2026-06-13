@@ -1,1 +1,2 @@
 Backend endpoint layout: /api/products, /api/cart, /api/orders, /api/users.
+Mongoose schema designs for User (isAdmin), Product, Cart, Order, and Notification.
