@@ -1,5 +1,9 @@
-import { Controller, Get, Post, Put, Delete, Body, NotFoundException, Param, Query } from "@nestjs/common";
+import { Controller, Get, Post, Put, Delete, Body, NotFoundException, Param, Query, UseGuards } from "@nestjs/common";
 import { ProductsService } from "./products.service";
+import { FirebaseAuthGuard } from "../users/auth.guard";
+import { RolesGuard } from "../users/roles.guard";
+import { Roles } from "../users/roles.decorator";
+import { CreateProductDto, UpdateProductDto } from "./dto/create-product.dto";
 
 @Controller("products")
 export class ProductsController {
@@ -26,12 +30,16 @@ export class ProductsController {
   }
 
   @Post()
-  async createProduct(@Body() body: any) {
+  @UseGuards(FirebaseAuthGuard, RolesGuard)
+  @Roles("admin")
+  async createProduct(@Body() body: CreateProductDto) {
     return this.productsService.createProduct(body);
   }
 
   @Put(":id")
-  async updateProduct(@Param("id") id: string, @Body() body: any) {
+  @UseGuards(FirebaseAuthGuard, RolesGuard)
+  @Roles("admin")
+  async updateProduct(@Param("id") id: string, @Body() body: UpdateProductDto) {
     const updated = await this.productsService.updateProduct(id, body);
     if (!updated) {
       throw new NotFoundException(`Product ${id} not found`);
@@ -40,6 +48,8 @@ export class ProductsController {
   }
 
   @Delete(":id")
+  @UseGuards(FirebaseAuthGuard, RolesGuard)
+  @Roles("admin")
   async deleteProduct(@Param("id") id: string) {
     const deleted = await this.productsService.deleteProduct(id);
     if (!deleted) {

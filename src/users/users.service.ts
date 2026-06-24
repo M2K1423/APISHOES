@@ -16,17 +16,22 @@ export class UsersService {
 
     const now = new Date();
     
-    // Check if this user should be admin based on email
-    const adminEmail = this.configService.get<string>("ADMIN_EMAIL");
-    if (adminEmail && payload.email === adminEmail) {
-      payload.isAdmin = true;
-    }
+    const safeData: any = {
+      uid: payload.uid,
+      email: payload.email,
+      displayName: payload.displayName,
+      photoURL: payload.photoURL,
+      provider: payload.provider,
+      lastLogin: now
+    };
+
+
 
     try {
       return await this.userModel
         .findOneAndUpdate(
           { uid: payload.uid },
-          { $set: { ...payload, lastLogin: now }, $setOnInsert: { createdAt: now } },
+          { $set: { ...safeData }, $setOnInsert: { createdAt: now } },
           { upsert: true, returnDocument: "after" }
         )
         .exec();
