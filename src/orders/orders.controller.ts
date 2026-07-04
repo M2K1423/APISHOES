@@ -6,6 +6,7 @@ import { RolesGuard } from "../users/roles.guard";
 import { Roles } from "../users/roles.decorator";
 import { CreateOrderDto, UpdateOrderStatusDto } from "./dto/create-order.dto";
 import { UsersService } from "../users/users.service";
+import { ParseObjectIdPipe } from "../common/pipes/parse-object-id.pipe";
 
 @Controller("orders")
 export class OrdersController {
@@ -57,7 +58,7 @@ export class OrdersController {
   @UseGuards(FirebaseAuthGuard)
   async getOrderById(
     @Param("userId") userId: string,
-    @Param("orderId") orderId: string,
+    @Param("orderId", ParseObjectIdPipe) orderId: string,
     @Req() req: any
   ) {
     const dbUser = await this.usersService.getUserByUid(req.user.uid);
@@ -73,7 +74,7 @@ export class OrdersController {
   @UseGuards(FirebaseAuthGuard, RolesGuard)
   @Roles("admin")
   updateOrderStatus(
-    @Param("orderId") orderId: string,
+    @Param("orderId", ParseObjectIdPipe) orderId: string,
     @Body() body: UpdateOrderStatusDto
   ) {
     return this.ordersService.updateOrderStatus(orderId, body.status);
