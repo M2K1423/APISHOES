@@ -1,8 +1,9 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { ConfigService } from "@nestjs/config";
 import { Model } from "mongoose";
 import { User } from "./user.schema";
+import { firebaseAdmin } from "../firebase-admin.config";
 
 @Injectable()
 export class UsersService {
@@ -50,5 +51,44 @@ export class UsersService {
 
   async getUserByUid(uid: string) {
     return this.userModel.findOne({ uid }).exec();
+  }
+
+  async changeUserPassword(uid: string, newPassword: string): Promise<void> {
+    try {
+      await firebaseAdmin.auth().updateUser(uid, {
+        password: newPassword,
+      });
+    } catch (error: any) {
+      throw new Error(`Không thể đổi mật khẩu Firebase: ${error.message}`);
+    }
+  }
+
+  async updateUserRole(uid: string, isAdmin: boolean): Promise<User | null> {
+    const updated = await this.userModel.findOneAndUpdate(
+      { uid },
+      { isAdmin },
+      { new: true }
+    ).exec();
+
+    if (!updated) {
+      throw new NotFoundException(`Không tìm thấy người dùng với UID ${uid}`);
+    }
+    return updated;
+  }
+
+  async deleteUser(uid: string): Promise<any> {
+    // 1. Xóa khỏi Firebase Auth
+    try {
+      await firebaseAdmin.auth().deleteUser(uid);
+    } catch (error: any) {
+      console.warn(`Không tìm thấy user trên Firebase Auth khi xóa: ${error.message}`);
+    }
+
+    // 2. Xóa khỏi MongoDB
+    const result = await this.userModel.deleteOne({ uid }).exec();
+    if (result.deletedCount === 0) {
+      throw new NotFoundException(`Không tìm thấy người dùng với UID ${uid} trong MongoDB`);
+    }
+    return { success: true };
   }
 }
