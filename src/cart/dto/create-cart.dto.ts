@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsNumber, Min, ValidateNested, IsArray } from "class-validator";
+import { IsString, IsNotEmpty, IsOptional, IsNumber, Min, Max, ValidateNested, IsArray } from "class-validator";
 import { Type } from "class-transformer";
 
 export class CartItemDto {
@@ -36,6 +36,7 @@ export class CartItemDto {
 
   @IsNumber()
   @Min(1)
+  @Max(99)
   quantity!: number;
 }
 

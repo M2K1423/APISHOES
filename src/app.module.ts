@@ -10,6 +10,7 @@ import { ProductsModule } from "./products/products.module";
 import { CartModule } from "./cart/cart.module";
 import { OrdersModule } from "./orders/orders.module";
 import { NotificationsModule } from "./notifications/notifications.module";
+import { ChatModule } from "./chat/chat.module";
 
 @Module({
   imports: [
@@ -32,7 +33,8 @@ import { NotificationsModule } from "./notifications/notifications.module";
     ProductsModule,
     CartModule,
     OrdersModule,
-    NotificationsModule
+    NotificationsModule,
+    ChatModule
   ],
   controllers: [AppController],
   providers: [
