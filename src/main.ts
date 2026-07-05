@@ -2,12 +2,15 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { ValidationPipe } from "@nestjs/common";
 import helmet from "helmet";
+import { NestExpressApplication } from "@nestjs/platform-express";
+import { join } from "node:path";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   
   // Use Helmet for security HTTP headers
-  app.use(helmet());
+  app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
+  app.useStaticAssets(join(process.cwd(), "uploads"), { prefix: "/uploads/" });
   
   // Configure CORS
   app.enableCors({

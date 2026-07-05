@@ -34,6 +34,9 @@ services:
       MONGODB_DB_NAME: shoes_db
     ports:
       - "3001:3001"
+    volumes:
+      - chat_uploads:/app/uploads
 
 volumes:
   mongo_data:
+  chat_uploads:
