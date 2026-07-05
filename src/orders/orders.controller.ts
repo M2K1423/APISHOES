@@ -34,7 +34,6 @@ export class OrdersController {
         throw new ForbiddenException("Cannot place order for another user");
       }
     } else {
-      // Guest check: must be a guest user ID or an email address
       if (!userId.startsWith("guest-") && !userId.includes("@")) {
         throw new ForbiddenException("Guest orders require a guest identifier or email");
       }
@@ -47,10 +46,7 @@ export class OrdersController {
   async getOrdersByUser(@Param("userId") userId: string, @Req() req: any) {
     const dbUser = await this.usersService.getUserByUid(req.user.uid);
     const isAdmin = dbUser ? dbUser.isAdmin : false;
-
-    if (req.user.uid !== userId && !isAdmin) {
-      throw new ForbiddenException("Cannot access orders of another user");
-    }
+    if (req.user.uid !== userId && !isAdmin) throw new ForbiddenException("Cannot access orders of another user");
     return this.ordersService.getOrdersByUser(userId);
   }
 
@@ -63,10 +59,7 @@ export class OrdersController {
   ) {
     const dbUser = await this.usersService.getUserByUid(req.user.uid);
     const isAdmin = dbUser ? dbUser.isAdmin : false;
-
-    if (req.user.uid !== userId && !isAdmin) {
-      throw new ForbiddenException("Cannot access order of another user");
-    }
+    if (req.user.uid !== userId && !isAdmin) throw new ForbiddenException("Cannot access order of another user");
     return this.ordersService.getOrderById(orderId, userId);
   }
 

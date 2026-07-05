@@ -27,6 +27,21 @@ export class Order extends Document {
 
   @Prop({ required: true })
   paymentMethod!: string;
+
+  @Prop({ default: "unpaid", index: true })
+  paymentStatus!: "unpaid" | "pending" | "paid" | "failed";
+
+  @Prop({ select: false })
+  paymentAccessToken?: string;
+
+  @Prop()
+  paymentTransactionNo?: string;
+
+  @Prop()
+  paymentResponseCode?: string;
+
+  @Prop()
+  paidAt?: Date;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

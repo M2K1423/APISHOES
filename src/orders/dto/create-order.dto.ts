@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsNumber, Min, ValidateNested, IsArray, IsOptional, IsEmail } from "class-validator";
+import { IsString, IsNotEmpty, IsNumber, Min, ValidateNested, IsArray, IsOptional, IsEmail, IsIn } from "class-validator";
 import { Type } from "class-transformer";
 import { CartItemDto } from "../../cart/dto/create-cart.dto";
 
@@ -40,6 +40,7 @@ export class CreateOrderDto {
 
   @IsString()
   @IsNotEmpty()
+  @IsIn(["cod", "vnpay"])
   paymentMethod!: string;
 }
 
