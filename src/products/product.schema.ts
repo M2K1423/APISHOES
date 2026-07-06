@@ -44,6 +44,9 @@ export class Product {
   @Prop({ default: 0 })
   sold!: number;
 
+  @Prop({ default: 100 })
+  stock!: number;
+
   @Prop({ type: [String], default: [] })
   colors!: string[];
 }

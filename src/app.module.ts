@@ -11,6 +11,7 @@ import { CartModule } from "./cart/cart.module";
 import { OrdersModule } from "./orders/orders.module";
 import { NotificationsModule } from "./notifications/notifications.module";
 import { ChatModule } from "./chat/chat.module";
+import { PaymentsModule } from "./payments/payments.module";
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { ChatModule } from "./chat/chat.module";
     CartModule,
     OrdersModule,
     NotificationsModule,
-    ChatModule
+    ChatModule,
+    PaymentsModule
   ],
   controllers: [AppController],
   providers: [

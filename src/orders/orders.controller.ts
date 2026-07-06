@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards, Req, ForbiddenException } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put, UseGuards, Req, ForbiddenException, Query } from "@nestjs/common";
 import { OrdersService } from "./orders.service";
 import { FirebaseAuthGuard } from "../users/auth.guard";
 import { OptionalFirebaseAuthGuard } from "../users/optional-auth.guard";
@@ -18,8 +18,15 @@ export class OrdersController {
   @Get("all")
   @UseGuards(FirebaseAuthGuard, RolesGuard)
   @Roles("admin")
-  getAllOrders() {
-    return this.ordersService.getAllOrders();
+  getAllOrders(
+    @Query("page") page?: string,
+    @Query("limit") limit?: string,
+    @Query("search") search?: string,
+    @Query("status") status?: string
+  ) {
+    const pageNum = parseInt(page || "1", 10) || 1;
+    const limitNum = parseInt(limit || "20", 10) || 20;
+    return this.ordersService.getAllOrdersPaginated(pageNum, limitNum, search, status);
   }
 
   @Post("user/:userId")
@@ -34,7 +41,6 @@ export class OrdersController {
         throw new ForbiddenException("Cannot place order for another user");
       }
     } else {
-      // Guest check: must be a guest user ID or an email address
       if (!userId.startsWith("guest-") && !userId.includes("@")) {
         throw new ForbiddenException("Guest orders require a guest identifier or email");
       }
@@ -47,10 +53,7 @@ export class OrdersController {
   async getOrdersByUser(@Param("userId") userId: string, @Req() req: any) {
     const dbUser = await this.usersService.getUserByUid(req.user.uid);
     const isAdmin = dbUser ? dbUser.isAdmin : false;
-
-    if (req.user.uid !== userId && !isAdmin) {
-      throw new ForbiddenException("Cannot access orders of another user");
-    }
+    if (req.user.uid !== userId && !isAdmin) throw new ForbiddenException("Cannot access orders of another user");
     return this.ordersService.getOrdersByUser(userId);
   }
 
@@ -63,10 +66,7 @@ export class OrdersController {
   ) {
     const dbUser = await this.usersService.getUserByUid(req.user.uid);
     const isAdmin = dbUser ? dbUser.isAdmin : false;
-
-    if (req.user.uid !== userId && !isAdmin) {
-      throw new ForbiddenException("Cannot access order of another user");
-    }
+    if (req.user.uid !== userId && !isAdmin) throw new ForbiddenException("Cannot access order of another user");
     return this.ordersService.getOrderById(orderId, userId);
   }
 
