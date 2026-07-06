@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards, Req, ForbiddenException } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put, UseGuards, Req, ForbiddenException, Query } from "@nestjs/common";
 import { OrdersService } from "./orders.service";
 import { FirebaseAuthGuard } from "../users/auth.guard";
 import { OptionalFirebaseAuthGuard } from "../users/optional-auth.guard";
@@ -18,8 +18,15 @@ export class OrdersController {
   @Get("all")
   @UseGuards(FirebaseAuthGuard, RolesGuard)
   @Roles("admin")
-  getAllOrders() {
-    return this.ordersService.getAllOrders();
+  getAllOrders(
+    @Query("page") page?: string,
+    @Query("limit") limit?: string,
+    @Query("search") search?: string,
+    @Query("status") status?: string
+  ) {
+    const pageNum = parseInt(page || "1", 10) || 1;
+    const limitNum = parseInt(limit || "20", 10) || 20;
+    return this.ordersService.getAllOrdersPaginated(pageNum, limitNum, search, status);
   }
 
   @Post("user/:userId")

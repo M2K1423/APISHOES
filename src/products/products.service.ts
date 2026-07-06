@@ -75,6 +75,7 @@ export class ProductsService implements OnModuleInit {
       rating: this.normalizeNumber(productData.rating, existing?.rating ?? 0),
       reviewCount: this.normalizeNumber(productData.reviewCount, existing?.reviewCount ?? 0),
       sold: this.normalizeNumber(productData.sold, existing?.sold ?? 0),
+      stock: this.normalizeNumber(productData.stock, existing?.stock ?? 100),
       colors
     };
   }

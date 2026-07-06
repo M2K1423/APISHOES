@@ -41,4 +41,14 @@ export class RealtimeGateway implements OnGatewayConnection, OnGatewayDisconnect
   emitProductCreated(notification: ProductCreatedNotification) {
     this.server.emit("product.created", notification);
   }
+
+  emitOrderCreated(notification: {
+    orderId: string;
+    customerName: string;
+    total: number;
+    message: string;
+    createdAt: string;
+  }) {
+    this.server.emit("order.created", notification);
+  }
 }

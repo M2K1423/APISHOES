@@ -61,6 +61,11 @@ export class CreateProductDto {
   @IsOptional()
   sold?: number;
 
+  @IsNumber()
+  @Min(0)
+  @IsOptional()
+  stock?: number;
+
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
@@ -123,6 +128,11 @@ export class UpdateProductDto {
   @Min(0)
   @IsOptional()
   sold?: number;
+
+  @IsNumber()
+  @Min(0)
+  @IsOptional()
+  stock?: number;
 
   @IsArray()
   @IsString({ each: true })
