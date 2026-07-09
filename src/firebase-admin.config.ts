@@ -1,3 +1,8 @@
+import * as dotenv from "dotenv";
+import * as path from "node:path";
+
+dotenv.config({ path: path.join(process.cwd(), ".env") });
+
 import * as admin from "firebase-admin";
 
 const projectId = process.env.FIREBASE_PROJECT_ID || process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
