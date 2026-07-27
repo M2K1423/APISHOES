@@ -107,25 +107,42 @@ Quy tắc trả lời:
         parts: [{ text: userMessage }]
       });
 
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          contents,
-          systemInstruction: {
-            parts: [{ text: systemPrompt }]
-          }
-        })
-      });
+      const models = ["gemini-3.5-flash", "gemini-3.6-flash"];
+      let response: any = null;
+      let lastErrorText = "";
 
-      if (!response.ok) {
-        const errText = await response.text();
-        console.error("Gemini API call failed:", errText);
+      for (const model of models) {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+        try {
+          response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              contents,
+              systemInstruction: {
+                parts: [{ text: systemPrompt }]
+              }
+            })
+          });
+
+          if (response.ok) {
+            break;
+          } else {
+            lastErrorText = await response.text();
+            console.warn(`Gemini call failed for ${model}:`, lastErrorText);
+          }
+        } catch (fetchErr: any) {
+          lastErrorText = fetchErr.message;
+          console.warn(`Gemini fetch error for ${model}:`, fetchErr);
+        }
+      }
+
+      if (!response || !response.ok) {
+        console.error("All Gemini models failed. Last error:", lastErrorText);
         return {
-          reply: "Xin lỗi, đã xảy ra lỗi khi kết nối với máy chủ AI. Vui lòng thử lại sau giây lát!"
+          reply: "Xin lỗi, máy chủ AI của Google đang quá tải hoặc gặp sự cố tạm thời. Bạn vui lòng thử lại sau giây lát nhé!"
         };
       }
 
