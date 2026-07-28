@@ -48,7 +48,11 @@ export class ChatController {
   @Post("ai-consult")
   @UseGuards(FirebaseAuthGuard)
   async aiConsult(
-    @Body() body: { message: string; history?: { role: "user" | "model"; content: string }[] }
+    @Body() body: {
+      message: string;
+      image?: { base64: string; mimeType: string };
+      history?: { role: "user" | "model"; content: string }[];
+    }
   ) {
     const userMessage = body.message?.trim();
     if (!userMessage) {
@@ -90,7 +94,15 @@ Quy tắc trả lời:
 1. Bạn CHỈ được phép tư vấn và gợi ý các sản phẩm có tên trong danh sách trên. Không tự bịa ra sản phẩm khác.
 2. Khi giới thiệu bất kỳ sản phẩm nào, luôn đính kèm đường dẫn của nó dưới dạng markdown link đúng định dạng: [Tên giày](/products/mã-sp) (ví dụ: [Nike Air Max 90](/products/nike-air-max-90)).
 3. Hãy trả lời bằng tiếng Việt lịch sự, nhiệt tình, sử dụng icon phù hợp. Trình bày nội dung ngắn gọn, dễ đọc bằng cách dùng các gạch đầu dòng và định dạng in đậm.
-4. Nếu khách hàng hỏi về đơn hàng, hãy hướng dẫn họ chọn chức năng "Kiểm tra đơn hàng" ở menu chat chính hoặc nhập mã đơn hàng của họ. Nếu họ muốn gặp nhân viên thật, hãy hướng dẫn họ tắt chế độ AI (click lại nút lấp lánh hoặc nút headset).`;
+4. Nếu khách hàng hỏi về đơn hàng, hãy hướng dẫn họ chọn chức năng "Kiểm tra đơn hàng" ở menu chat chính hoặc nhập mã đơn hàng của họ. Nếu họ muốn gặp nhân viên thật, hãy hướng dẫn họ tắt chế độ AI (click lại nút lấp lánh hoặc nút headset).
+5. Bạn CHỈ được phép trả lời các câu hỏi liên quan đến sản phẩm giày, thương hiệu giày, size/màu sắc giày, việc mua sắm giày tại Myshoes, chính sách cửa hàng, đơn hàng hoặc các vấn đề trực tiếp liên quan đến giày dép và dịch vụ của cửa hàng.
+Nếu khách hàng hỏi bất kỳ câu hỏi nào ngoài phạm vi này (ví dụ: tư vấn xổ số kiến thiết, nấu ăn, thời tiết, giải toán, viết mã, lập trình, tin tức chính trị, v.v.), bạn tuyệt đối KHÔNG được trả lời câu hỏi đó, mà phải trả lời chính xác theo mẫu dưới đây (thay thế [chủ đề không liên quan] bằng chủ đề mà khách hàng đã hỏi, ví dụ "xổ số kiến thiết", "nấu ăn", v.v. một cách phù hợp và tự nhiên):
+
+Dạ, Myshoes rất tiếc là tụi mình không có thông tin tư vấn về [chủ đề không liên quan] rồi ạ. 😅 Nhiệm vụ chính của mình là hỗ trợ bạn tìm kiếm và chọn lựa những đôi giày thật êm ái, thời trang và có giá ưu đãi nhất tại cửa hàng thôi nè!
+
+Bạn có muốn mình tư vấn thêm về size hay kiểu dáng của mẫu giày nào khác không ạ? 😉
+
+Chú ý: Giữ đúng định dạng và các icon 😅, 😉 của mẫu trả lời trên.`;
 
       const contents: any[] = [];
       if (body.history && Array.isArray(body.history)) {
@@ -102,9 +114,19 @@ Quy tắc trả lời:
         }
       }
 
+      const userParts: any[] = [{ text: userMessage }];
+      if (body.image && body.image.base64 && body.image.mimeType) {
+        userParts.push({
+          inlineData: {
+            mimeType: body.image.mimeType,
+            data: body.image.base64
+          }
+        });
+      }
+
       contents.push({
         role: "user",
-        parts: [{ text: userMessage }]
+        parts: userParts
       });
 
       const models = ["gemini-3.5-flash", "gemini-3.6-flash"];

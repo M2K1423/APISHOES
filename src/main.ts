@@ -4,6 +4,7 @@ import { ValidationPipe } from "@nestjs/common";
 import helmet from "helmet";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { join } from "node:path";
+import { json, urlencoded } from "express";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -11,6 +12,10 @@ async function bootstrap() {
   // Use Helmet for security HTTP headers
   app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
   app.useStaticAssets(join(process.cwd(), "uploads"), { prefix: "/uploads/" });
+  
+  // Increase payload size limit for Base64 image uploads
+  app.use(json({ limit: "10mb" }));
+  app.use(urlencoded({ extended: true, limit: "10mb" }));
   
   // Configure CORS
   app.enableCors({
