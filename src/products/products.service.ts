@@ -3,12 +3,14 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { DEFAULT_PRODUCTS } from "./product.constants";
 import { Product } from "./product.schema";
+import { Order } from "../orders/order.schema";
 import { NotificationsService } from "../notifications/notifications.service";
 
 @Injectable()
 export class ProductsService implements OnModuleInit {
   constructor(
     @InjectModel(Product.name) private readonly productModel: Model<Product>,
+    @InjectModel(Order.name) private readonly orderModel: Model<Order>,
     private readonly notificationsService: NotificationsService
   ) { }
 
@@ -169,5 +171,109 @@ export class ProductsService implements OnModuleInit {
   async deleteProduct(id: string): Promise<boolean> {
     const result = await this.productModel.deleteOne({ id });
     return result.deletedCount === 1;
+  }
+
+  async getRecommendations(query: {
+    userId?: string;
+    excludeId?: string;
+    recentIds?: string;
+    limit?: number;
+  }): Promise<Product[]> {
+    const limit = query.limit ? Number(query.limit) : 8;
+    const excludeIds = query.excludeId ? query.excludeId.split(",") : [];
+    const recentIds = query.recentIds ? query.recentIds.split(",") : [];
+
+    const allProducts = await this.productModel.find({}).lean().exec();
+    
+    const targetCategories: string[] = [];
+    const targetBrands: string[] = [];
+    let targetPriceSum = 0;
+    let targetPriceCount = 0;
+
+    if (query.userId && !query.userId.startsWith("guest-")) {
+      try {
+        const orders = await this.orderModel.find({ userId: query.userId }).lean().exec();
+        for (const order of orders) {
+          for (const item of order.items) {
+            if (item.productId) {
+              const prod = allProducts.find((p) => p.id === item.productId);
+              if (prod) {
+                targetCategories.push(prod.category);
+                targetBrands.push(prod.brand);
+                const priceVal = Number(String(prod.price).replace(/\D/g, "")) || 0;
+                if (priceVal > 0) {
+                  targetPriceSum += priceVal;
+                  targetPriceCount++;
+                }
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Lỗi khi đọc lịch sử mua hàng:", err);
+      }
+    }
+
+    for (const recentId of recentIds) {
+      const prod = allProducts.find((p) => p.id === recentId);
+      if (prod) {
+        targetCategories.push(prod.category);
+        targetBrands.push(prod.brand);
+        const priceVal = Number(String(prod.price).replace(/\D/g, "")) || 0;
+        if (priceVal > 0) {
+          targetPriceSum += priceVal;
+          targetPriceCount++;
+        }
+      }
+    }
+
+    const avgPrice = targetPriceCount > 0 ? targetPriceSum / targetPriceCount : null;
+
+    const categoryFreq = targetCategories.reduce((acc, cat) => {
+      acc[cat.toLowerCase()] = (acc[cat.toLowerCase()] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    const brandFreq = targetBrands.reduce((acc, br) => {
+      acc[br.toLowerCase()] = (acc[br.toLowerCase()] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    const scoredProducts = allProducts
+      .filter((p) => !excludeIds.includes(p.id))
+      .map((p) => {
+        let score = 0;
+
+        const catLower = p.category.toLowerCase();
+        if (categoryFreq[catLower]) {
+          score += categoryFreq[catLower] * 10;
+        }
+
+        const brandLower = p.brand.toLowerCase();
+        if (brandFreq[brandLower]) {
+          score += brandFreq[brandLower] * 8;
+        }
+
+        if (avgPrice) {
+          const pPrice = Number(String(p.price).replace(/\D/g, "")) || 0;
+          if (pPrice > 0) {
+            const pctDiff = Math.abs(pPrice - avgPrice) / avgPrice;
+            if (pctDiff <= 0.1) score += 5;
+            else if (pctDiff <= 0.25) score += 3;
+            else if (pctDiff <= 0.5) score += 1;
+          }
+        }
+
+        score += (p.rating || 0) * 2;
+        score += Math.min((p.sold || 0) / 10, 5);
+
+        return { product: p, score };
+      });
+
+    scoredProducts.sort((a, b) => b.score - a.score);
+    return scoredProducts.slice(0, limit).map((sp) => {
+      const { _id, __v, ...productData } = sp.product as any;
+      return productData as Product;
+    });
   }
 }

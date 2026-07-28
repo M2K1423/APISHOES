@@ -18,6 +18,21 @@ export class ProductsController {
     return this.productsService.getProducts({ brand, category, search });
   }
 
+  @Get("recommendations")
+  getRecommendations(
+    @Query("userId") userId?: string,
+    @Query("excludeId") excludeId?: string,
+    @Query("recentIds") recentIds?: string,
+    @Query("limit") limit?: string
+  ) {
+    return this.productsService.getRecommendations({
+      userId,
+      excludeId,
+      recentIds,
+      limit: limit ? parseInt(limit, 10) : undefined
+    });
+  }
+
   @Get(":id")
   async getProductById(@Param("id") id: string) {
     const product = await this.productsService.getProductById(id);
