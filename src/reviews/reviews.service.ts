@@ -68,7 +68,7 @@ export class ReviewsService implements OnModuleInit {
     if (reviews.length === 0) {
       await this.productModel.updateOne(
         { id: productId },
-        { rating: 0, reviewCount: 0 }
+        { reviewCount: 0 }
       ).exec();
       return;
     }

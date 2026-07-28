@@ -5,6 +5,7 @@ import { OrdersController } from "./orders.controller";
 import { OrdersService } from "./orders.service";
 import { Product, ProductSchema } from "../products/product.schema";
 import { RealtimeModule } from "../realtime/realtime.module";
+import { CouponsModule } from "../coupons/coupons.module";
 
 @Module({
   imports: [
@@ -12,7 +13,8 @@ import { RealtimeModule } from "../realtime/realtime.module";
       { name: Order.name, schema: OrderSchema },
       { name: Product.name, schema: ProductSchema }
     ]),
-    RealtimeModule
+    RealtimeModule,
+    CouponsModule
   ],
   controllers: [OrdersController],
   providers: [OrdersService],

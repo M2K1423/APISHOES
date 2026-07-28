@@ -42,6 +42,10 @@ export class CreateOrderDto {
   @IsNotEmpty()
   @IsIn(["cod", "vnpay"])
   paymentMethod!: string;
+
+  @IsString()
+  @IsOptional()
+  couponCode?: string;
 }
 
 export class UpdateOrderStatusDto {

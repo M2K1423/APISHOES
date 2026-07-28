@@ -5,6 +5,7 @@ import { Order } from "./order.schema";
 import { Product } from "../products/product.schema";
 import { randomBytes } from "node:crypto";
 import { RealtimeGateway } from "../realtime/realtime.gateway";
+import { CouponsService } from "../coupons/coupons.service";
 
 function parsePrice(price: string) {
   return Number(String(price).replace(/\D/g, "")) || 0;
@@ -15,7 +16,8 @@ export class OrdersService {
   constructor(
     @InjectModel(Order.name) private readonly orderModel: Model<Order>,
     @InjectModel(Product.name) private readonly productModel: Model<Product>,
-    private readonly realtimeGateway: RealtimeGateway
+    private readonly realtimeGateway: RealtimeGateway,
+    private readonly couponsService: CouponsService
   ) {}
 
   async createOrder(userId: string, orderData: any): Promise<Order> {
@@ -42,14 +44,33 @@ export class OrdersService {
         quantity: item.quantity
       };
     });
-    const total = items.reduce((sum: number, item: any) => sum + parsePrice(item.price) * item.quantity, 0);
-    if (total <= 0) throw new BadRequestException("Order total must be greater than zero");
+    const itemsTotal = items.reduce((sum: number, item: any) => sum + parsePrice(item.price) * item.quantity, 0);
+    if (itemsTotal <= 0) throw new BadRequestException("Order total must be greater than zero");
+
+    let couponDiscount = 0;
+    let couponCode = "";
+    if (orderData.couponCode) {
+      try {
+        const validation = await this.couponsService.validateCoupon(orderData.couponCode, itemsTotal);
+        couponCode = validation.code;
+        couponDiscount = validation.discountAmount;
+        
+        // Mark the coupon as used
+        await this.couponsService.useCoupon(validation.code);
+      } catch (err) {
+        throw new BadRequestException(err instanceof Error ? err.message : "Mã giảm giá không hợp lệ.");
+      }
+    }
+
+    const finalTotal = itemsTotal - couponDiscount;
     const isVnpay = orderData.paymentMethod === "vnpay";
     const newOrder = new this.orderModel({
       userId,
       ...orderData,
       items,
-      total,
+      total: finalTotal,
+      couponCode,
+      couponDiscount,
       paymentStatus: isVnpay ? "pending" : "unpaid",
       paymentAccessToken: isVnpay ? randomBytes(24).toString("hex") : undefined,
       statusHistory: [

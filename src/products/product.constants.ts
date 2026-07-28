@@ -36,7 +36,7 @@ export const DEFAULT_PRODUCTS = [
       "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=1200&q=80"
     ],
     discount: "-23%",
-    promotion: "Giảm thêm 10%",
+    promotion: "Giảm 440k",
     rating: 4.9,
     reviewCount: 86,
     sold: 174,
@@ -76,7 +76,7 @@ export const DEFAULT_PRODUCTS = [
       "https://i.pinimg.com/736x/eb/32/00/eb320005d2732b3311d56a6c33c11d10.jpg"
     ],
     discount: "-24%",
-    promotion: "Freeship toàn quốc",
+    promotion: "Giảm 470k",
     rating: 4.8,
     reviewCount: 41,
     sold: 96,
@@ -135,7 +135,7 @@ export const DEFAULT_PRODUCTS = [
       "https://i.pinimg.com/736x/ee/7d/87/ee7d8757ff1362fea07cf031a0232f77.jpg"
     ],
     discount: "-26%",
-    promotion: "Mua 2 giảm 10%",
+    promotion: "Giảm 360k",
     rating: 4.4,
     reviewCount: 22,
     sold: 65,
@@ -197,7 +197,7 @@ export const DEFAULT_PRODUCTS = [
       "https://i.pinimg.com/736x/18/b3/b6/18b3b60e25629269f68458ba969e552b.jpg"
     ],
     discount: "-28%",
-    promotion: "Giảm 100k",
+    promotion: "Giảm 840k",
     rating: 4.8,
     reviewCount: 62,
     sold: 88,
@@ -254,7 +254,7 @@ export const DEFAULT_PRODUCTS = [
       "https://i.pinimg.com/736x/53/5d/99/535d9990de027c8736c0c5426bc2e6db.jpg"
     ],
     discount: "-22%",
-    promotion: "Mua 2 giảm 10%",
+    promotion: "Giảm 260k",
     rating: 4.5,
     reviewCount: 210,
     sold: 420,
@@ -293,7 +293,7 @@ export const DEFAULT_PRODUCTS = [
       "https://i.pinimg.com/736x/51/cd/31/51cd312d5fb7b80a15c557684c5a740f.jpg"
     ],
     discount: "-27%",
-    promotion: "Quà tặng giới hạn",
+    promotion: "Giảm 1.500k",
     rating: 4.9,
     reviewCount: 18,
     sold: 25,
@@ -331,7 +331,7 @@ export const DEFAULT_PRODUCTS = [
       "https://i.pinimg.com/736x/2b/36/bd/2b36bd3f4f3aa73338d728e2c0446f84.jpg"
     ],
     discount: "-21%",
-    promotion: "Tặng vớ kỹ thuật",
+    promotion: "Giảm 750k",
     rating: 4.8,
     reviewCount: 29,
     sold: 54,

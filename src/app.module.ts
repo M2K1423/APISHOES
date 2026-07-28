@@ -13,6 +13,7 @@ import { NotificationsModule } from "./notifications/notifications.module";
 import { ChatModule } from "./chat/chat.module";
 import { PaymentsModule } from "./payments/payments.module";
 import { ReviewsModule } from "./reviews/reviews.module";
+import { CouponsModule } from "./coupons/coupons.module";
 
 @Module({
   imports: [
@@ -38,7 +39,8 @@ import { ReviewsModule } from "./reviews/reviews.module";
     NotificationsModule,
     ChatModule,
     PaymentsModule,
-    ReviewsModule
+    ReviewsModule,
+    CouponsModule
   ],
   controllers: [AppController],
   providers: [

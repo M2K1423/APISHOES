@@ -31,6 +31,12 @@ export class Order extends Document {
   @Prop({ default: "unpaid", index: true })
   paymentStatus!: "unpaid" | "pending" | "paid" | "failed";
 
+  @Prop({ default: "" })
+  couponCode?: string;
+
+  @Prop({ default: 0 })
+  couponDiscount?: number;
+
   @Prop({ select: false })
   paymentAccessToken?: string;
 

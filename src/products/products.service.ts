@@ -84,6 +84,28 @@ export class ProductsService implements OnModuleInit {
 
   async onModuleInit() {
     await this.seedProducts();
+    await this.restoreDefaultRatings();
+  }
+
+  async restoreDefaultRatings() {
+    for (const defaultProd of DEFAULT_PRODUCTS) {
+      const dbProd = await this.productModel.findOne({ id: defaultProd.id }).lean().exec();
+      if (dbProd) {
+        const updateFields: any = {
+          price: defaultProd.price,
+          oldPrice: defaultProd.oldPrice,
+          discount: defaultProd.discount,
+          promotion: defaultProd.promotion
+        };
+        if (dbProd.rating === 0) {
+          updateFields.rating = defaultProd.rating;
+        }
+        await this.productModel.updateOne(
+          { id: defaultProd.id },
+          updateFields
+        ).exec();
+      }
+    }
   }
 
   async seedProducts(force = false) {
